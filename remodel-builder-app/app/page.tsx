@@ -455,7 +455,14 @@ export default function Page() {
             </div>
 
             {error ? (
-              <div style={{ padding: 12, borderRadius: 12, background: "rgba(255,0,0,0.10)", border: "1px solid rgba(255,0,0,0.25)" }}>
+              <div
+                style={{
+                  padding: 12,
+                  borderRadius: 12,
+                  background: "rgba(255,0,0,0.10)",
+                  border: "1px solid rgba(255,0,0,0.25)",
+                }}
+              >
                 <div style={{ fontWeight: 800 }}>Error</div>
                 <div style={{ opacity: 0.9, marginTop: 6 }}>{error}</div>
               </div>
@@ -545,7 +552,10 @@ export default function Page() {
                         <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 10 }}>
                           {m.options.map((opt) => {
                             const isSelected = selected?.id === opt.id;
-                            const isColor = opt.preview?.kind === "color";
+
+                            // ✅ Type-safe union narrowing for preview
+                            const preview = opt.preview;
+
                             const swatchStyle: React.CSSProperties = {
                               height: 28,
                               width: 28,
@@ -553,7 +563,14 @@ export default function Page() {
                               border: isSelected
                                 ? "2px solid rgba(212,175,55,0.95)"
                                 : "1px solid rgba(255,255,255,0.18)",
-                              background: isColor ? opt.preview!.hex : "rgba(255,255,255,0.10)",
+                              background: preview?.kind === "color" ? preview.hex : "rgba(255,255,255,0.10)",
+                              ...(preview?.kind === "image"
+                                ? {
+                                    backgroundImage: `url(${preview.src})`,
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                  }
+                                : {}),
                               boxShadow: isSelected ? "0 0 0 4px rgba(212,175,55,0.12)" : "none",
                               cursor: "pointer",
                             };
@@ -619,17 +636,12 @@ export default function Page() {
                   >
                     <img ref={imgRef} src={beforeSrc} alt="Your photo" style={{ width: "100%", display: "block" }} />
                     {previewEnabled ? (
-                      <canvas
-                        ref={canvasRef}
-                        style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
-                      />
+                      <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
                     ) : null}
                   </div>
                 )}
 
-                {isRendering ? (
-                  <div style={{ marginTop: 12, opacity: 0.85 }}>Rendering photoreal preview…</div>
-                ) : null}
+                {isRendering ? <div style={{ marginTop: 12, opacity: 0.85 }}>Rendering photoreal preview…</div> : null}
 
                 {afterSrc ? (
                   <div style={{ marginTop: 12, display: "flex", gap: 10, flexWrap: "wrap" }}>
