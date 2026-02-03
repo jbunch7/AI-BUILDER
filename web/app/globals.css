@@ -1,0 +1,292 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap");
+
+:root {
+  --kv-purple: #4b0082;
+  --kv-gold: #d4af37;
+  --kv-offwhite: #f2f2f2;
+  --kv-black: #0b0b0f;
+  --kv-white: #ffffff;
+
+  --background: var(--kv-black);
+  --foreground: var(--kv-offwhite);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+}
+
+body {
+  background: radial-gradient(1200px 600px at 20% 0%, rgba(75, 0, 130, 0.35), transparent 60%),
+    radial-gradient(900px 500px at 80% 20%, rgba(212, 175, 55, 0.12), transparent 55%),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Utility classes (no Tailwind config required) */
+.kv-headline {
+  font-family: var(--font-headline), system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+.kv-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+}
+
+/* A darker surface panel (useful when embedded on a light page) */
+.kv-surface {
+  background:
+    radial-gradient(900px 450px at 15% 0%, rgba(75, 0, 130, 0.40), transparent 60%),
+    radial-gradient(800px 420px at 85% 25%, rgba(212, 175, 55, 0.14), transparent 55%),
+    rgba(11, 11, 15, 0.92);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: none;
+  border-radius: 24px;
+}
+
+.kv-btn {
+  background: linear-gradient(135deg, rgba(75, 0, 130, 1), rgba(124, 58, 237, 0.95));
+  color: var(--kv-offwhite);
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 14px 35px rgba(75, 0, 130, 0.35);
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+
+.kv-btn:hover { transform: translateY(-1px); box-shadow: 0 18px 45px rgba(75, 0, 130, 0.45); }
+.kv-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.kv-btn-secondary {
+  background: rgba(255,255,255,0.08);
+  color: var(--kv-offwhite);
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+.kv-input {
+  width: 100%;
+  border-radius: 12px;
+  padding: 12px 12px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.16);
+  color: var(--kv-offwhite);
+  outline: none;
+}
+
+.kv-input:focus {
+  border-color: rgba(212,175,55,0.6);
+  box-shadow: 0 0 0 4px rgba(212,175,55,0.12);
+}
+
+.kv-link { color: rgba(212,175,55,0.95); text-decoration: underline; text-underline-offset: 3px; }
+
+
+/* App card: blend into GHL container (no drop shadow) + premium glass border */
+.kv-app-card {
+  box-shadow: none;
+  border: 1px solid rgba(212, 175, 55, 0.38);
+  background: linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.035));
+  backdrop-filter: blur(10px);
+}
+
+/* Mobile-friendly modal layout tweaks (no desktop style change) */
+@media (max-width: 520px) {
+  .kv-modal-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .kv-modal-actions .kv-btn,
+  .kv-modal-actions .kv-btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
+
+/* === Lead form: fit neatly inside the app container on mobile (no scroll, no cutoff) === */
+@media (max-width: 520px) {
+  /* overlay padding controls the "gap" around the card */
+  .kv-lead-overlay{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+
+  /* make the card fill the available height with the same gap on all sides */
+  .kv-lead-card{
+    width: 100% !important;
+    height: calc(100dvh - 24px) !important; /* 12px top + 12px bottom */
+    max-height: calc(100dvh - 24px) !important;
+    overflow: hidden !important;
+
+    /* tighter interior so everything fits without scaling */
+    padding: 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+
+    transform: none !important;
+  }
+
+  .kv-lead-header{
+    margin-bottom: 4px !important;
+    gap: 4px !important;
+  }
+
+  .kv-lead-card form{
+    flex: 1 1 auto;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    min-height: 0;
+  }
+
+  /* tighten the 2-col grid group wrapper */
+  .kv-lead-card form > div{
+    gap: 8px !important;
+  }
+
+  .kv-lead-card label{
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+  }
+
+  .kv-lead-card .kv-input{
+    padding: 9px 11px !important;
+    font-size: 14px !important;
+    border-radius: 12px !important;
+  }
+
+  .kv-modal-actions{
+    margin-top: 4px !important;
+    gap: 8px !important;
+  }
+
+  .kv-btn, .kv-btn-secondary{
+    padding: 10px 12px !important;
+  }
+}
+
+/* extra-small phones: slightly tighter without changing the outer gap */
+@media (max-width: 380px) {
+  .kv-lead-card{
+    padding: 12px !important;
+    gap: 7px !important;
+  }
+  .kv-lead-card .kv-input{
+    padding: 8px 10px !important;
+    font-size: 13px !important;
+  }
+  .kv-btn, .kv-btn-secondary{
+    padding: 9px 12px !important;
+  }
+}
+
+/* Desktop / tablet: re-center lead overlay */
+@media (min-width: 521px) {
+  .kv-lead-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    box-sizing: border-box;
+  }
+}
+
+/* ------------------------------------------------------------
+   Wizard page transition overlay (3s between pages)
+------------------------------------------------------------ */
+
+.kv-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: radial-gradient(1200px 600px at 50% 35%, rgba(212,175,55,0.18), rgba(0,0,0,0.82));
+  backdrop-filter: blur(8px);
+}
+
+.kv-transition-card {
+  width: min(560px, 100%);
+  padding: 22px;
+  border-radius: 18px;
+}
+
+.kv-loader-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.kv-loader-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(212,175,55,0.95);
+  animation: kvDots 1.1s infinite ease-in-out;
+}
+
+.kv-loader-dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.kv-loader-dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes kvDots {
+  0%, 80%, 100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  40% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+.kv-loader-bar {
+  margin-top: 16px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.10);
+  overflow: hidden;
+  position: relative;
+}
+
+.kv-loader-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-65%);
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.55), transparent);
+  animation: kvBar 1.05s infinite linear;
+}
+
+@keyframes kvBar {
+  0% {
+    transform: translateX(-65%);
+  }
+  100% {
+    transform: translateX(65%);
+  }
+}
+
+@keyframes kv-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
